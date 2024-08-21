@@ -19,6 +19,9 @@ const WriteBlog = () => {
             const response = await axios.post('http://localhost:5000/api/posts', newPost);
             console.log('Response:', response);
             alert('Blog post created successfully!');
+            setTitle('');
+            setContent('');
+            setImage('');
         } catch (error) {
             console.error('Error creating blog post:', error);
             alert('Failed to create blog post. Please try again.');

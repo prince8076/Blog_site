@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import WriteBlog from './pages/WriteBlog';
 import FullArticle from './components/FullArticle';
+import AdminPanel from './components/AdminPanel';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/write-blog" element={<WriteBlog />} />
             <Route path="/post/:id" element={<FullArticle />} />
+            <Route path="/admin" element={<AdminPanel />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

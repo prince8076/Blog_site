@@ -8,7 +8,7 @@ router.get('/posts', async (req, res) => {
         const posts = await Post.find();
         res.json(posts);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: 'Failed to fetch posts.' });
     }
 });
 
@@ -16,12 +16,12 @@ router.get('/posts', async (req, res) => {
 router.get('/posts/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
-        if (post == null) {
-            return res.status(404).json({ message: 'Cannot find post' });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found.' });
         }
         res.json(post);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: 'Failed to fetch post.' });
     }
 });
 
@@ -36,7 +36,7 @@ router.post('/posts', async (req, res) => {
         const newPost = await post.save();
         res.status(201).json(newPost);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: 'Failed to create post.' });
     }
 });
 
@@ -44,8 +44,8 @@ router.post('/posts', async (req, res) => {
 router.put('/posts/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
-        if (post == null) {
-            return res.status(404).json({ message: 'Cannot find post' });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found.' });
         }
 
         if (req.body.title != null) {
@@ -61,23 +61,21 @@ router.put('/posts/:id', async (req, res) => {
         const updatedPost = await post.save();
         res.json(updatedPost);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        res.status(400).json({ message: 'Failed to update post.' });
     }
 });
 
 // Delete a post
 router.delete('/posts/:id', async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id);
-        if (post == null) {
-            return res.status(404).json({ message: 'Cannot find post' });
+        const deletedPost = await Post.findByIdAndDelete(req.params.id);
+        if (!deletedPost) {
+            return res.status(404).json({ message: 'Post not found.' });
         }
-
-        await post.remove();
-        res.json({ message: 'Deleted post' });
+        res.json({ message: 'Post deleted.' });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error('Error deleting post:', err); // Log the error for debugging
+        res.status(500).json({ message: 'Failed to delete post.' });
     }
 });
-
 module.exports = router;
